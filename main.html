@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HARPO v1.0</title>
+</head>
+<body style="background-color: #65e7d7;">
+    <div>
+
+        <div>
+            <img src="ico/harpo1.ico">
+        </div>
+
+        <div>
+            <h1>Harpo Crypter</h1>
+        </div>
+
+        <div class="container">
+            <h2 class="text-center">Encryption</h2>
+            <form>
+                <p class="">Enter your message below below below</p>
+                <textarea type="text" class="inputbox" id="encInput" placeholder="Your message here"></textarea>
+                <p id="results"></p>
+                <input type="button" id="sendEncBtn" value="Encrypt" onclick="encryption()">
+            </form>
+        </div>
+
+        <div>
+            <h2 class="text-center">Decryption</h2>
+            <form>
+                <p class="">Enter your code below</p>
+                <textarea type="text" class="inputbox" id="decInput" placeholder="Enter your code here"></textarea>
+                <p id="results"></p>
+                <input type="button" id="sendDecBtn" value="Decrypt" onclick="decryption()">
+
+            </form>
+        </div>
+
+        <div>
+            <p>
+                <b>Harpo</b> is a cryption app. You can create secret messages.<br>
+                All you need to do is typing your message. After pressing the <span style="color: rebeccapurple;"><b>"Encrypt"</b></span> button, you will receive a secret code for your message.<br>
+                You can also decrypt your secret code by typing your code and checking the <span style="color: rebeccapurple;"><b>"Decrypt"</b></span> button.
+            </p>
+        </div>
+    </div>
+
+   
+
+<script>
+    const electron = require("electron");
+    const { ipcRenderer } = electron;
+
+    const pool = [" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ".", ",", "?", "!", "-", "@", "=", "_", "*", "Å", "Ä", "Ç", "i", "Ğ", "Ş", "Ü", "Ö"]
+    var poolsize = pool.length;
+
+    /*let inputValue = document.querySelector('#input');
+    let sendBtn = document.querySelector("#sendBtn");
+    // let keyValue = document.querySelector("#codekey");*/
+
+    var mesInputVal = document.getElementById('encInput');
+    
+    function encryption(){ 
+        var mesInput = mesInputVal.value.toUpperCase();
+        var mesInputSize = (mesInput.length-1);
+        console.log(mesInput)
+        var code = []
+        for(var z=0; z<=mesInputSize; z++)   {
+            for(var x=0; x<=poolsize; x++)  { 
+                //console.log(z)
+                if((pool[x] == mesInput[z]) && (x >= 10))   {
+                    code.push(String(x))
+                }   else if ((pool[x] == mesInput[z]) && (x < 10))    {
+                    code.push("0" + x)
+                }
+            }
+        }
+        var result
+        result = code.join('')
+        mesInputVal.value = result
+    }
+
+    //AAAAAAAAAAAAAAAAAAAAAAAAAA
+    var codeInputVal = document.getElementById('decInput');
+
+    function decryption(){
+        var codeInput = codeInputVal.value.toUpperCase();
+        var codeInputSize = (codeInput.length-1)
+
+        var message = []
+        var arrx = []
+        var arry = []
+        for(var i=0; i<=codeInputSize; i++) {
+            if(i%2 == 0){
+                arrx.push(Number(codeInput[i]))
+            }   else {
+                arry.push(Number(codeInput[i]))
+            }
+        }
+        var arrlen = (codeInputSize / 2)
+        for(j=0; j<=arrlen; j++){
+            if(arrx[j] !== 0){
+                message.push(pool[ 10 * arrx[j] + arry[j] ])  
+            }   else if (arrx[j] == 0){
+                message.push(pool[arry[j]])
+            }
+        }
+        var result
+        result = message.join('');
+        result2 = result.charAt(0).toLowerCase()+result.slice(1);
+        codeInputVal.value = result2
+    }
+
+    
+
+
+
+
+    /*
+    sendBtn.addEventListener("click", () => {
+        ipcRenderer.send("key:inputValue", inputValue.value);
+        ipcRenderer.send("key:keyValue", keyValue.value);
+        ipcRenderer.send("key:sendBtn");
+    }); */
+</script>
+
+</body>
+</html>
