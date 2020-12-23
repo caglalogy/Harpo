@@ -83,7 +83,7 @@
     var codeInputVal = document.getElementById('decInput');
 
     function decryption(){
-        var codeInput = codeInputVal.value.toUpperCase();
+        var codeInput = codeInputVal.value;
         var codeInputSize = (codeInput.length-1)
         //AAAA
 
@@ -106,8 +106,8 @@
             }
         }
         var result
-        result = message.join('');
-        result2 = result.charAt(0).toLowerCase()+result.slice(1);
+        result = message.join('').toLowerCase();
+        result2 = result.charAt(0).toUpperCase()+result.slice(1);
         codeInputVal.value = result2
     }
 
