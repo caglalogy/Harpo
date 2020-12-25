@@ -1,10 +1,12 @@
 {
-  "name": "electrontraining",
+  "name": "harpo",
+  "productName": "harpo decryption app",
   "version": "1.0.0",
-  "description": "",
+  "description": "message decryption app",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . harpo --overwrite -- asar=true --platform=win32 --arch=ia32 --icon==assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"harpo decryption app\""
   },
   "author": "",
   "license": "ISC",
