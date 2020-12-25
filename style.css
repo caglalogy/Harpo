@@ -23,3 +23,7 @@ body {
 #image1 {
     height: 40px;
 }
+.movebutton{
+    width: 115px;
+    margin-left: 5px;
+}

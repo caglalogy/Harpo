@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>HARPO v1.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body style="background-color: #65e7d7;">
     <div>
-
-        <div class="header">
-            
-            <h1><img src="ico/harpo1.ico" id=image1 alt="logo"> Harpo Crypter</h1>
-        </div>
-
+        <h1><img src="assets\icons\win\icon.ico" id=image1 alt="logo"> Harpo Crypter</h1>
+        
         <div class="container">
             <h2 class="text-center">Encryption</h2>
             <form>
-                <p class="">Enter your message below below below</p>
+                <p class="">Enter your message below³</p>
                 <textarea type="text" class="inputbox" id="encInput" placeholder="Your message here"></textarea>
+                <br>
+                <button class="js-textareacopybtn">copy it!</button>
+                <input class="movebutton" type="button" id="moveEnc" value="move to decrypt.." onclick="moveToDec()">
                 <p id="results"></p>
                 <input class="key-input" type="number" id="encrypt-key" min="1" value="1"><input class="button" type="button" id="sendEncBtn" value="Encrypt" onclick="encryption()">
             </form>
@@ -27,6 +28,9 @@
             <form>
                 <p class="">Enter your code below</p>
                 <textarea type="text" class="inputbox" id="decInput" placeholder="Enter your code here"></textarea>
+                <br>
+                <button class="js-textareacopybtn2">copy it!</button>
+                <input class="movebutton" type="button" id="moveDec" value="move to encrypt.." onclick="moveToEnc()">
                 <p id="results"></p>
                 <input class="key-input" type="number" id="decrypt-key" min="1" value="1"><input class="button" type="button" id="sendDecBtn" value="Decrypt" onclick="decryption()">
 
@@ -35,18 +39,63 @@
 
     </div>
 
-   
-
 <script>
     const electron = require("electron");
     const { ipcRenderer } = electron;
 
+    //copy encrypt text area button 
+    var copyEncryptArea= document.querySelector('.js-textareacopybtn');
+    copyEncryptArea.addEventListener('click',function(event){
+        var copyEncryptArea2 = document.querySelector('#encInput');
+        copyEncryptArea2.select();
+        try{
+            var successful = document.execCommand('copy');
+            var msg = successful? 'copied' : 'error';
+            console.log(msg);
+        }
+        catch(err){
+            console.log('unable to copy');
+        }
+    });
+
+    //move encrypted value to decryption text area
+    var mesInputVal = document.getElementById('encInput');
+    var codeInputVal = document.getElementById('decInput');
+
+    function moveToDec(){
+        var moveText = mesInputVal.value;
+        mesInputVal.value= "";
+        codeInputVal.value= moveText;
+    }
+    
+    //copy decrypt text area button 
+    var copyDecryptArea= document.querySelector('.js-textareacopybtn2');
+    copyDecryptArea.addEventListener('click',function(event){
+        var copyDecryptArea2 = document.querySelector('#decInput');
+        copyDecryptArea2.select();
+        try{
+            var successful = document.execCommand('copy');
+            var msg = successful? 'copied' : 'error';
+            console.log(msg);
+        }
+        catch(err){
+            console.log('unable to copy');
+        }
+    });
+
+    //move decrypted value to encryption text area
+    var mesInputVal = document.getElementById('encInput');
+    var codeInputVal = document.getElementById('decInput');
+
+    function moveToEnc(){
+        var moveText = codeInputVal.value;
+        codeInputVal.value= "";
+        mesInputVal.value= moveText;
+    }
+
     const pool = [" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ".", ",", "?", "!", "-", "@", "=", "_", "*", "Å", "Ä", "Ç", "Ğ", "Ş", "Ü", "Ö", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     var poolsize = pool.length;
 
-    /*let inputValue = document.querySelector('#input');
-    let sendBtn = document.querySelector("#sendBtn");
-    // let keyValue = document.querySelector("#codekey");*/
 
     var mesInputVal = document.getElementById('encInput');
     var enckey = document.getElementById("encrypt-key");
@@ -127,15 +176,6 @@
 
     
 
-
-
-
-    /*
-    sendBtn.addEventListener("click", () => {
-        ipcRenderer.send("key:inputValue", inputValue.value);
-        ipcRenderer.send("key:keyValue", keyValue.value);
-        ipcRenderer.send("key:sendBtn");
-    }); */
 </script>
 
 </body>
