@@ -7,8 +7,9 @@
 <body style="background-color: #65e7d7;">
     <div>
 
-        <div>
-            <img style="width: 1cm;"  src="ico/harpo1.ico"><h1>Harpo Crypter</h1>
+        <div class="header">
+            
+            <h1><img src="ico/harpo1.ico" id=image1 alt="logo"> Harpo Crypter</h1>
         </div>
 
         <div class="container">
@@ -17,7 +18,7 @@
                 <p class="">Enter your message below below below</p>
                 <textarea type="text" class="inputbox" id="encInput" placeholder="Your message here"></textarea>
                 <p id="results"></p>
-                <input type="button" id="sendEncBtn" value="Encrypt" onclick="encryption()">
+                <input class="key-input" type="number" id="encrypt-key" min="1" value="1"><input class="button" type="button" id="sendEncBtn" value="Encrypt" onclick="encryption()">
             </form>
         </div>
 
@@ -27,7 +28,7 @@
                 <p class="">Enter your code below</p>
                 <textarea type="text" class="inputbox" id="decInput" placeholder="Enter your code here"></textarea>
                 <p id="results"></p>
-                <input type="button" id="sendDecBtn" value="Decrypt" onclick="decryption()">
+                <input class="key-input" type="number" id="decrypt-key" min="1" value="1"><input class="button" type="button" id="sendDecBtn" value="Decrypt" onclick="decryption()">
 
             </form>
         </div>
@@ -47,7 +48,7 @@
     const electron = require("electron");
     const { ipcRenderer } = electron;
 
-    const pool = [" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ".", ",", "?", "!", "-", "@", "=", "_", "*", "Å", "Ä", "Ç", "i", "Ğ", "Ş", "Ü", "Ö", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    const pool = [" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ".", ",", "?", "!", "-", "@", "=", "_", "*", "Å", "Ä", "Ç", "Ğ", "Ş", "Ü", "Ö", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     var poolsize = pool.length;
 
     /*let inputValue = document.querySelector('#input');
@@ -55,56 +56,79 @@
     // let keyValue = document.querySelector("#codekey");*/
 
     var mesInputVal = document.getElementById('encInput');
-    
+    var enckey = document.getElementById("encrypt-key");
+  
+  
     function encryption(){ 
-        var mesInput = mesInputVal.value.toUpperCase();
-        var mesInputSize = (mesInput.length-1);
-        console.log(mesInput)
-        var code = []
-        for(var z=0; z<=mesInputSize; z++)   {
-            for(var x=0; x<=poolsize; x++)  { 
-                //console.log(z)
-                if((pool[x] == mesInput[z]) && (x >= 10))   {
-                    code.push(String(x))
-                }   else if ((pool[x] == mesInput[z]) && (x < 10))    {
-                    code.push("0" + x)
+        var encloop = Number(enckey.value);
+
+        for(var i=1; i<=encloop; i++){
+            if(i==1){
+            var mesInput = mesInputVal.value.toUpperCase();
+            }   else {
+            mesInput = result
+            }
+            var mesInputSize = (mesInput.length-1);
+            console.log(mesInput)
+            var code = []
+            for(var z=0; z<=mesInputSize; z++)   {
+                for(var x=0; x<=poolsize; x++)  { 
+                    //console.log(z)
+                    if((pool[x] == mesInput[z]) && (x >= 10))   {
+                        code.push(String(x))
+                    }   else if ((pool[x] == mesInput[z]) && (x < 10))    {
+                        code.push("0" + x)
+                    }
                 }
             }
+            var result
+            result = code.join('')
         }
-        var result
-        result = code.join('')
+
         mesInputVal.value = result
     }
 
     //AAAAAAAAAAAAAAAAAAAAAAAAAA
     var codeInputVal = document.getElementById('decInput');
+    var deckey = document.getElementById("decrypt-key");
 
     function decryption(){
-        var codeInput = codeInputVal.value;
-        var codeInputSize = (codeInput.length-1)
-        //AAAA
+        var decloop = Number(deckey.value);
 
-        var message = []
-        var arrx = []
-        var arry = []
-        for(var i=0; i<=codeInputSize; i++) {
-            if(i%2 == 0){
-                arrx.push(Number(codeInput[i]))
+        for(var k=1; k<=decloop; k++){
+            console.log(k)
+            if(k==1){
+                var codeInput = codeInputVal.value;
             }   else {
-                arry.push(Number(codeInput[i]))
+                codeInput = result
             }
-        }
-        var arrlen = (codeInputSize / 2)
-        for(j=0; j<=arrlen; j++){
-            if(arrx[j] !== 0){
-                message.push(pool[ 10 * arrx[j] + arry[j] ])  
-            }   else if (arrx[j] == 0){
-                message.push(pool[arry[j]])
+        
+            var codeInputSize = (codeInput.length-1)
+            //AAAA
+
+            var message = []
+            var arrx = []
+            var arry = []
+            for(var i=0; i<=codeInputSize; i++) {
+                if(i%2 == 0){
+                    arrx.push(Number(codeInput[i]))
+                }   else {
+                    arry.push(Number(codeInput[i]))
+                }
             }
+            var arrlen = (codeInputSize / 2)
+            for(j=0; j<=arrlen; j++){
+                if(arrx[j] !== 0){
+                    message.push(pool[ 10 * arrx[j] + arry[j] ])  
+                }   else if (arrx[j] == 0){
+                    message.push(pool[arry[j]])
+                }
+            }
+            var result
+            result = message.join('').toLowerCase();
+            result2 = result.charAt(0).toUpperCase()+result.slice(1);
+            
         }
-        var result
-        result = message.join('').toLowerCase();
-        result2 = result.charAt(0).toUpperCase()+result.slice(1);
         codeInputVal.value = result2
     }
 

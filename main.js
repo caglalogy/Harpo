@@ -18,8 +18,6 @@ app.on('ready', () => {
       }
     });
 
-    console.log(process.platform)
-
     mainWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, "main.html"),
@@ -69,6 +67,10 @@ const mainMenuTemplate = [
             }
         ]
     },
+    {
+        label : "Reload",
+        role : "reload"
+    }
 ];
 
 if(process.platform == "darwin"){
