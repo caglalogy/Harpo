@@ -12,7 +12,8 @@ let mainWindow;
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 400,
-        height: 685,
+        height: 710,
+        resizable:false,
         webPreferences: {
         nodeIntegration: true
       }
@@ -56,6 +57,29 @@ app.on('ready', () => {
 
 });
 
+function createAddWindow(){
+
+    addWindow = new BrowserWindow({
+        width: 300,
+        height: 410,
+        resizable:false,
+        title: 'Informations',
+        webPreferences:{
+            nodeIntegration:true
+        }
+    });
+
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    addWindow.on('close', function(){
+        addWindow = null;
+    });
+};
+
 const mainMenuTemplate = [
     {
         label : "Exit",
@@ -70,6 +94,12 @@ const mainMenuTemplate = [
     {
         label : "Reload",
         role : "reload"
+    },
+    {
+        label : "Information",
+        click(){
+            createAddWindow();
+        }             
     }
 ];
 
@@ -95,7 +125,7 @@ if(process.env.NODE_ENV !== "production"){
                 {
                     label : "Yenile",
                     role : "reload"
-                }
+                },
             ]
         }
     )
